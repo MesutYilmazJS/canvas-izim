@@ -1,0 +1,240 @@
+/* Genel Body ve Başlık Ayarları */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    margin-top: 20px;
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.tool {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#drawMode, .eraser-btn {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#drawMode {
+    width: 140px;
+    text-align: center;
+}
+
+.eraser-btn {
+    background-color: #ff4d4f;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.eraser-btn:hover {
+    background-color: #d9363e;
+}
+
+.eraser-btn.active {
+    background-color: #28a745;
+}
+
+.cizgi_border,
+.renk_border {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #fdfdfd;
+    transition: border-color 0.3s;
+}
+
+.cizgi_border:focus,
+.renk_border:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.clear-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.clear-btn:hover {
+    background-color: #d9363e;
+}
+.canvas-container {
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+canvas {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    display: block;
+}
+
+.undo-btn, .redo-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.undo-btn:hover, .redo-btn:hover {
+    background-color: #0056b3;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #218838;
+}
+.brush-style-selector {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-left: 10px;
+}
+.text-tools {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+#textInput, #fontSizeSelector {
+    padding: 6px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.text-mode-btn {
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.text-mode-btn.active {
+    background-color: #5a32a3;
+}
+.grid-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+    font-size: 1rem;
+}
+.grid-controls input {
+    margin-right: 6px;
+}
+.layer-controls {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1rem;
+}
+.layer-controls button, .layer-controls label {
+    margin-bottom: 10px;
+}
+.layers-panel {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 250px;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.layers-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.layers-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.layers-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.layers-list li input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.layers-list li button {
+    margin-left: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 5px;
+}
+
+.layers-list li button:hover {
+    background-color: #d32f2f;
+}

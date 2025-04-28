@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</header>
+
+<body>
+    <h1 class="title">Paint</h1>
+
+    <div class="toolbar">
+        <div class="tool">
+            <label for="cizgi2">Boyut:</label>
+            <input class="cizgi_border" type="number" id="cizgi2" value="1" min="1" max="100"
+                onchange="canvasDrawer.setLineWidth(this.value)">
+        </div>
+
+        <div class="tool">
+            <label for="renk">Renk Seç:</label>
+            <select class="renk_border" id="renk" name="renk" onchange="canvasDrawer.setLineColor(this.value)">
+                <option selected value="black">Siyah</option>
+                <option value="red">Kırmızı</option>
+                <option value="green">Yeşil</option>
+                <option value="blue">Mavi</option>
+                <option value="orange">Turuncu</option>
+                <option value="purple">Mor</option>
+                <option value="grey">Kahverengi</option>
+            </select>
+        </div>
+        <div class="tool">
+            <label for="drawMode">Çizim Modu:</label>
+            <select id="drawMode" onchange="canvasDrawer.setDrawMode(this.value)">
+                <option value="free">Serbest Çizim</option>
+                <option value="line">Düz Çizgi</option>
+                <option value="rectangle">Dikdörtgen</option>
+                <option value="circle">Yuvarlak</option>
+            </select>
+        </div>
+        <div class="tool">
+            <label for="drawMode">Fırça Modu:</label>
+            <select onchange="canvasDrawer.setBrushStyle(this.value)" class="brush-style-selector">
+                <option value="free">Serbest</option>
+                <option value="spray">Sprey</option>
+                <option value="circle">Daire Damga</option>
+            </select>
+        </div>
+        <div class="text-tools">
+            <input type="text" id="textInput" placeholder="Yazılacak metin" />
+            <select id="fontSizeSelector">
+                <option value="16">16px</option>
+                <option value="24" selected>24px</option>
+                <option value="32">32px</option>
+                <option value="40">40px</option>
+            </select>
+            <button onclick="canvasDrawer.enableTextMode()" class="text-mode-btn">Metin Ekle</button>
+        </div>
+        <div class="grid-controls">
+            <label><input type="checkbox" id="toggleGrid" onchange="canvasDrawer.toggleGrid()"> Kılavuz Göster</label>
+            <label><input type="checkbox" id="snapToGrid" onchange="canvasDrawer.toggleSnap()"> Snap to Grid</label>
+            <label><input type="color" id="gridBackgroundColor" onchange="canvasDrawer.setGridBackgroundColor(this.value)"> Grid Arka Plan Rengi</label>
+        </div>
+                
+                
+        <div class="tool">
+            <button class="eraser-btn" onclick="canvasDrawer.setEraserMode()">Silgi</button>
+        </div>
+        <button class="clear-btn" onclick="canvasDrawer.clearCanvas();">Temizle</button>
+        <button onclick="canvasDrawer.undo()" class="undo-btn">Geri</button>
+        <button onclick="canvasDrawer.redo()" class="redo-btn">İleri</button>
+        <button onclick="canvasDrawer.saveImage()" class="save-btn">Kaydet</button>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="canvas_ids" width="1420" height="650" data-canvas_iskelet="ana"></canvas>
+    </div>
+</body>
+
+<script type="text/javascript" src="style/index.js"></script>
+
+</html>
