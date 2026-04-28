@@ -1,79 +1,134 @@
 <!DOCTYPE html>
-<html>
-<header>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Paint — Profesyonel Çizim Deneyimi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/index.css">
-</header>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
 
 <body>
-    <h1 class="title">Paint</h1>
+    <main class="canvas-container" style="height: 100vh; padding: 20px;">
+        <div class="canvas-wrapper">
+            <!-- Floating Canvas Actions (Above canvas) -->
+            <div class="canvas-actions">
+                <button onclick="canvasDrawer.undo()" class="action-btn" title="Geri Al">
+                    <i data-lucide="undo-2"></i>
+                    <span>Geri</span>
+                </button>
+                <button onclick="canvasDrawer.redo()" class="action-btn" title="İleri Al">
+                    <i data-lucide="redo-2"></i>
+                    <span>İleri</span>
+                </button>
+                <div class="action-divider"></div>
+                <button onclick="canvasDrawer.clearCanvas()" class="action-btn danger" title="Temizle">
+                    <i data-lucide="trash-2"></i>
+                    <span>Temizle</span>
+                </button>
+                <button onclick="canvasDrawer.saveImage()" class="action-btn success" title="Kaydet">
+                    <i data-lucide="download"></i>
+                    <span>Kaydet</span>
+                </button>
+            </div>
+            <canvas id="canvas_ids" width="1400" height="800" data-canvas_iskelet="ana"></canvas>
+        </div>
+    </main>
 
-    <div class="toolbar">
-        <div class="tool">
-            <label for="cizgi2">Boyut:</label>
-            <input class="cizgi_border" type="number" id="cizgi2" value="1" min="1" max="100"
-                onchange="canvasDrawer.setLineWidth(this.value)">
-        </div>
-
-        <div class="tool">
-            <label for="renk">Renk Seç:</label>
-            <select class="renk_border" id="renk" name="renk" onchange="canvasDrawer.setLineColor(this.value)">
-                <option selected value="black">Siyah</option>
-                <option value="red">Kırmızı</option>
-                <option value="green">Yeşil</option>
-                <option value="blue">Mavi</option>
-                <option value="orange">Turuncu</option>
-                <option value="purple">Mor</option>
-                <option value="grey">Kahverengi</option>
-            </select>
-        </div>
-        <div class="tool">
-            <label for="drawMode">Çizim Modu:</label>
-            <select id="drawMode" onchange="canvasDrawer.setDrawMode(this.value)">
-                <option value="free">Serbest Çizim</option>
-                <option value="line">Düz Çizgi</option>
-                <option value="rectangle">Dikdörtgen</option>
-                <option value="circle">Yuvarlak</option>
-            </select>
-        </div>
-        <div class="tool">
-            <label for="drawMode">Fırça Modu:</label>
-            <select onchange="canvasDrawer.setBrushStyle(this.value)" class="brush-style-selector">
-                <option value="free">Serbest</option>
-                <option value="spray">Sprey</option>
-                <option value="circle">Daire Damga</option>
-            </select>
-        </div>
-        <div class="text-tools">
-            <input type="text" id="textInput" placeholder="Yazılacak metin" />
-            <select id="fontSizeSelector">
-                <option value="16">16px</option>
-                <option value="24" selected>24px</option>
-                <option value="32">32px</option>
-                <option value="40">40px</option>
-            </select>
-            <button onclick="canvasDrawer.enableTextMode()" class="text-mode-btn">Metin Ekle</button>
-        </div>
-        <div class="grid-controls">
-            <label><input type="checkbox" id="toggleGrid" onchange="canvasDrawer.toggleGrid()"> Kılavuz Göster</label>
-            <label><input type="checkbox" id="snapToGrid" onchange="canvasDrawer.toggleSnap()"> Snap to Grid</label>
-            <label><input type="color" id="gridBackgroundColor" onchange="canvasDrawer.setGridBackgroundColor(this.value)"> Grid Arka Plan Rengi</label>
-        </div>
-                
-                
-        <div class="tool">
-            <button class="eraser-btn" onclick="canvasDrawer.setEraserMode()">Silgi</button>
-        </div>
-        <button class="clear-btn" onclick="canvasDrawer.clearCanvas();">Temizle</button>
-        <button onclick="canvasDrawer.undo()" class="undo-btn">Geri</button>
-        <button onclick="canvasDrawer.redo()" class="redo-btn">İleri</button>
-        <button onclick="canvasDrawer.saveImage()" class="save-btn">Kaydet</button>
+    <!-- Sidebar Toggle (Outside for clipping safety) -->
+    <div class="sidebar-toggle-container" id="sidebarToggle" onclick="document.getElementById('mainSidebar').classList.toggle('collapsed'); document.getElementById('sidebarToggle').classList.toggle('collapsed')">
+        <div class="sidebar-toggle"></div>
     </div>
 
-    <div class="canvas-container">
-        <canvas id="canvas_ids" width="1420" height="650" data-canvas_iskelet="ana"></canvas>
-    </div>
+    <aside class="sidebar-left" id="mainSidebar">
+        <div class="sidebar-scroll-area">
+            <div class="sidebar-header" style="margin-bottom: 20px;">
+                <h1 class="title" style="font-size: 1.8rem;">Paint</h1>
+            </div>
+
+            <details class="sidebar-section" open>
+                <summary class="sidebar-title">Fırça & Renk</summary>
+                <div class="floating-card">
+                    <div class="tool" style="margin-bottom: 12px;">
+                        <label style="width: 60px;">Boyut</label>
+                        <input type="number" id="cizgi2" value="1" min="1" max="100" onchange="canvasDrawer.setLineWidth(this.value)" style="flex: 1;">
+                    </div>
+                    <div class="tool" style="margin-bottom: 12px;">
+                        <label style="width: 60px;">Renk</label>
+                        <select id="renk" onchange="canvasDrawer.setLineColor(this.value)" style="flex: 1;">
+                            <option selected value="black">Siyah</option>
+                            <option value="red">Kırmızı</option>
+                            <option value="green">Yeşil</option>
+                            <option value="blue">Mavi</option>
+                            <option value="orange">Turuncu</option>
+                            <option value="purple">Mor</option>
+                            <option value="grey">Kahverengi</option>
+                        </select>
+                    </div>
+                    <button class="eraser-btn" onclick="canvasDrawer.setEraserMode()" style="width: 100%; justify-content: center;">Silgi Modu</button>
+                </div>
+            </details>
+
+            <details class="sidebar-section">
+                <summary class="sidebar-title">Çizim Modları</summary>
+                <div class="floating-card">
+                    <div class="tool" style="margin-bottom: 12px;">
+                        <label style="width: 60px;">Mod</label>
+                        <select id="drawMode" onchange="canvasDrawer.setDrawMode(this.value)" style="flex: 1;">
+                            <option value="free">Serbest Çizim</option>
+                            <option value="line">Düz Çizgi</option>
+                            <option value="rectangle">Dikdörtgen</option>
+                            <option value="circle">Yuvarlak</option>
+                        </select>
+                    </div>
+                    <div class="tool">
+                        <label style="width: 60px;">Stil</label>
+                        <select onchange="canvasDrawer.setBrushStyle(this.value)" style="flex: 1;">
+                            <option value="free">Serbest</option>
+                            <option value="spray">Sprey</option>
+                            <option value="circle">Daire Damga</option>
+                        </select>
+                    </div>
+                </div>
+            </details>
+
+            <details class="sidebar-section">
+                <summary class="sidebar-title">Metin Aracı</summary>
+                <div class="floating-card text-tools">
+                    <input type="text" id="textInput" placeholder="Metin yazın..." style="width: 100%; margin-bottom: 8px;" />
+                    <select id="fontSizeSelector" style="width: 100%; margin-bottom: 8px;">
+                        <option value="16">16px</option>
+                        <option value="24" selected>24px</option>
+                        <option value="32">32px</option>
+                        <option value="40">40px</option>
+                    </select>
+                    <button onclick="canvasDrawer.enableTextMode()" class="primary-btn text-mode-btn" style="width: 100%; justify-content: center;">Metin Ekle</button>
+                </div>
+            </details>
+
+            <details class="sidebar-section">
+                <summary class="sidebar-title">Görünüm</summary>
+                <div class="floating-card grid-controls">
+                    <label style="margin-bottom: 8px;"><input type="checkbox" id="toggleGrid" onchange="canvasDrawer.toggleGrid()"> Kılavuz Göster</label>
+                    <label style="margin-bottom: 8px;"><input type="checkbox" id="snapToGrid" onchange="canvasDrawer.toggleSnap()"> Snap to Grid</label>
+                    <div style="margin-top: 8px;">
+                        <label style="display: block; margin-bottom: 4px;">Arka Plan</label>
+                        <input type="color" id="gridBackgroundColor" onchange="canvasDrawer.setGridBackgroundColor(this.value)" value="#ffffff" style="width: 100%; height: 32px; padding: 2px;">
+                    </div>
+                </div>
+            </details>
+        </div>
+    </aside>
+
+    <script type="text/javascript" src="style/index.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
-
-<script type="text/javascript" src="style/index.js"></script>
 
 </html>
