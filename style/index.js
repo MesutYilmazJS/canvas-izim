@@ -18,10 +18,40 @@ class CanvasDrawer {
         this.gridSize = 25;
         this.gridBackgroundColor = '#ffffff';
 
-        this.initEventListeners();
+        // Initialize Pencil Cursor
+        this.cursor = document.createElement('div');
+        this.cursor.id = 'brushCursor';
+        this.cursor.innerHTML = '<i data-lucide="pencil" style="width: 24px; height: 24px; color: var(--accent-color);"></i>';
+        document.body.appendChild(this.cursor);
+        if (window.lucide) lucide.createIcons();
+
+        this.setupEventListeners();
+        this.loadSettings();
     }
 
-    initEventListeners() {
+    loadSettings() {
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark');
+            this.updateThemeIcon();
+        }
+    }
+
+    toggleDarkMode() {
+        const isDark = document.body.classList.toggle('dark');
+        localStorage.setItem('darkMode', isDark);
+        this.updateThemeIcon();
+    }
+
+    updateThemeIcon() {
+        const icon = document.getElementById('themeIcon');
+        if (icon && window.lucide) {
+            const isDark = document.body.classList.contains('dark');
+            icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+    }
+
+    setupEventListeners() {
         this.canvas.addEventListener("mousedown", (e) => {
             if (this.textModeEnabled) {
                 this.addText(e);
@@ -46,6 +76,21 @@ class CanvasDrawer {
             this.draw(e);
         }, { passive: false });
         this.canvas.addEventListener("touchend", () => this.stopDrawing());
+
+        // Cursor Preview Listeners
+        this.canvas.addEventListener('mousemove', (e) => this.updateCursor(e));
+        this.canvas.addEventListener('mouseenter', () => this.cursor.style.display = 'block');
+        this.canvas.addEventListener('mouseleave', () => this.cursor.style.display = 'none');
+    }
+
+    updateCursor(e) {
+        this.cursor.style.left = `${e.clientX}px`;
+        this.cursor.style.top = `${e.clientY}px`;
+        
+        const icon = this.cursor.querySelector('i');
+        if (icon) {
+            icon.style.color = this.isErasing ? 'var(--text-muted)' : this.lineColor;
+        }
     }
 
     saveState() {
@@ -109,26 +154,23 @@ class CanvasDrawer {
         }
 
         if (this.drawMode === 'free') {
-            switch (this.brushStyle) {
-                case 'free':
-                    this.context.lineTo(mouseX, mouseY);
-                    this.context.stroke();
-                    break;
-                case 'spray':
-                    for (let i = 0; i < 15; i++) {
-                        const offsetX = (Math.random() - 0.5) * 30;
-                        const offsetY = (Math.random() - 0.5) * 30;
-                        this.context.beginPath();
-                        this.context.arc(mouseX + offsetX, mouseY + offsetY, 0.5, 0, 2 * Math.PI);
-                        this.context.fill();
-                    }
-                    break;
-                case 'circle':
-                    this.context.beginPath();
-                    this.context.arc(mouseX, mouseY, this.lineWidth * 2, 0, 2 * Math.PI);
-                    this.context.fill();
-                    break;
+            this.context.lineTo(mouseX, mouseY);
+            this.context.stroke();
+        } else if (this.drawMode === 'spray') {
+            const density = 20;
+            const radius = this.lineWidth * 2;
+            for (let i = 0; i < density; i++) {
+                const offsetX = (Math.random() - 0.5) * radius * 2;
+                const offsetY = (Math.random() - 0.5) * radius * 2;
+                this.context.beginPath();
+                this.context.arc(mouseX + offsetX, mouseY + offsetY, 0.5, 0, 2 * Math.PI);
+                this.context.fill();
             }
+        } else if (this.drawMode === 'stamp') {
+            this.context.beginPath();
+            this.context.arc(mouseX, mouseY, this.lineWidth * 2, 0, 2 * Math.PI);
+            this.context.fillStyle = this.lineColor;
+            this.context.fill();
         } else if (this.drawMode === 'line') {
             this.restoreLastState();
             this.context.beginPath();

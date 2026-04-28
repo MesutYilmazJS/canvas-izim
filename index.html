@@ -35,6 +35,11 @@
                     <i data-lucide="download"></i>
                     <span>Kaydet</span>
                 </button>
+                <div class="action-divider"></div>
+                <button onclick="canvasDrawer.toggleDarkMode()" class="action-btn" title="Tema Değiştir">
+                    <i data-lucide="moon" id="themeIcon"></i>
+                    <span>Tema</span>
+                </button>
             </div>
             <canvas id="canvas_ids" width="1400" height="800" data-canvas_iskelet="ana"></canvas>
         </div>
@@ -77,21 +82,15 @@
             <details class="sidebar-section">
                 <summary class="sidebar-title">Çizim Modları</summary>
                 <div class="floating-card">
-                    <div class="tool" style="margin-bottom: 12px;">
+                    <div class="tool">
                         <label style="width: 60px;">Mod</label>
                         <select id="drawMode" onchange="canvasDrawer.setDrawMode(this.value)" style="flex: 1;">
                             <option value="free">Serbest Çizim</option>
+                            <option value="spray">Sprey Fırça</option>
+                            <option value="stamp">Daire Damga</option>
                             <option value="line">Düz Çizgi</option>
                             <option value="rectangle">Dikdörtgen</option>
                             <option value="circle">Yuvarlak</option>
-                        </select>
-                    </div>
-                    <div class="tool">
-                        <label style="width: 60px;">Stil</label>
-                        <select onchange="canvasDrawer.setBrushStyle(this.value)" style="flex: 1;">
-                            <option value="free">Serbest</option>
-                            <option value="spray">Sprey</option>
-                            <option value="circle">Daire Damga</option>
                         </select>
                     </div>
                 </div>
